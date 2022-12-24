@@ -146,7 +146,7 @@ export default function DetailsScreen({ navigation }) {
         },
       })
       .then((response) => {
-        setVendors(response.data);
+        setVendors(response.data.data);
       })
       .catch((error) => {
         console.log("error:", error);
@@ -236,11 +236,10 @@ export default function DetailsScreen({ navigation }) {
                   >
                     <Image
                       source={{
-                        uri: `${
-                          vendor.picture
-                            ? vendor.picture
-                            : "http://img1.igg.com/999/game/2020/07/15/030709_7102_min.png"
-                        }`,
+                        uri: `${vendor.picture
+                          ? vendor.picture
+                          : "http://img1.igg.com/999/game/2020/07/15/030709_7102_min.png"
+                          }`,
                       }}
                       style={styles.cards2View}
                     />
