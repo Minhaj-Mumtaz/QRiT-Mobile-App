@@ -63,16 +63,16 @@ const SignUpScreen = ({ navigation }) => {
     config
       .post(`/user/${item[selectedItemidx]}/signup/`, requestBody)
       .then((response) => {
-        if (response.data.token === undefined) {
-          showErr(true, true, "Wrong Email/Password");
+        if (response.data._token === undefined) {
+          showErr(true, true, "account created, please sign in again");
         } else {
-          AuthService.setUserSession(response.data.token);
+          AuthService.setUserSession(response.data._token);
           AuthService.setUserId(response.data.user_id);
           SignUpSuccess();
         }
       })
       .catch((error) => {
-        showErr(true, true, `Unexpected Error :${error} `);
+        showErr(true, true, `${error.response.data.message} `);
       });
   };
 
@@ -117,8 +117,8 @@ const SignUpScreen = ({ navigation }) => {
       showErr(true, true, "a valid first name must have 2 characters or more");
     } else if (second_name.length < 2) {
       showErr(true, true, "a valid last name must have 2 characters or more");
-    } else if (Password.length < 6) {
-      showErr(true, true, "a password must be at least 6 characters long");
+    } else if (Password.length < 8) {
+      showErr(true, true, "a password must be at least 8 characters long");
     } else {
       createAccount(first_name, second_name);
     }
