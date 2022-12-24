@@ -31,12 +31,12 @@ const SignInScreen = ({ navigation, route }) => {
     config
       .post(`/user/${auth}/login/`, requestBody)
       .then((response) => {
-        console.log('error');
-        if (response.data.token === undefined) {
+        console.log(response.data);
+        if (response.data._token === undefined) {
           showErr(true, true, "Wrong Email/Password");
         } else {
-          AuthService.setUserSession(response.data.token);
-          AuthService.setUserId(response.data.user_id);
+          AuthService.setUserSession(response.data._token);
+          AuthService.setUserId(response.data._id);
           if (auth === "customer") {
             navigation.navigate("Main");
           } else {
@@ -46,7 +46,7 @@ const SignInScreen = ({ navigation, route }) => {
         }
       })
       .catch((error) => {
-        showErr(true, true, `Invalid Credentials `);
+        showErr(true, true, `${error.response.data.message}`);
       });
   };
 
