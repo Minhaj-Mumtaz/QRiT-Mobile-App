@@ -30,7 +30,7 @@ const TransactionScreen = ({ navigation, route }) => {
     const token = await AuthService.getToken();
     const requestBody = {
       spend_reward: points,
-      cus_id: user_id,
+      customer_id: user_id,
       id: data.id,
       shop_price: data.shop_price,
     };
@@ -42,17 +42,18 @@ const TransactionScreen = ({ navigation, route }) => {
         },
       })
       .then((response) => {
-        if (response.data.token === undefined) {
-          showErr(true, true, "Wrong Email/Password");
+        if (response.status !== 200) {
+          showErr(true, true, "Network Issue");
         } else {
           setLoader(false);
+          navigation.navigate("ThankYou");
         }
       })
       .catch((error) => {
-        showErr(true, true, `Unexpected Error :${error} `);
+        showErr(true, true, `${error.response.data.message}`);
       });
 
-    navigation.navigate("ThankYou");
+    // navigation.navigate("ThankYou");
   };
 
   const validate = () => {
@@ -87,7 +88,7 @@ const TransactionScreen = ({ navigation, route }) => {
         }
       })
       .catch((error) => {
-        showErr(true, true, `Unexpected Error :${error} `);
+        showErr(true, true, `${error.response.data.message}`);
       });
   };
 
