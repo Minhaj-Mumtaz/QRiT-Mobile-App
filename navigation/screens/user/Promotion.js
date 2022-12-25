@@ -112,7 +112,7 @@ export default function Promotion({ navigation }) {
         },
       })
       .then((response) => {
-        setPromotion(response.data);
+        setPromotion(response.data.data);
       })
       .catch((error) => {
         console.log("error:", error);

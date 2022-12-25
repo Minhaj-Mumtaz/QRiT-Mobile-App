@@ -80,7 +80,7 @@ export default function BranchesScreen({ navigation }) {
         },
       })
       .then((response) => {
-        setVendorDetails(response.data);
+        setVendorDetails(response.data.data);
       })
       .catch((error) => {
         console.log("error:", error);

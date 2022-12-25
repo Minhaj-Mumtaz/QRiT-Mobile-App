@@ -91,7 +91,7 @@ export default function AddBranch({ navigation }) {
       address: address,
       phone_no: mobile,
       email: email,
-      picture: null,
+      picture: "",
     };
 
     config
@@ -101,14 +101,14 @@ export default function AddBranch({ navigation }) {
         },
       })
       .then((response) => {
-        if (response.status !== 201) {
-          showErr(true, true, "Wrong Email/Password");
-        } else {
+        if (response.status === 200 || response.status === 201) {
           branchCreateSuccess();
+        } else {
+          showErr(true, true, `${response.data.message}`);
         }
       })
       .catch((error) => {
-        showErr(true, true, `Unexpected Error :${error} `);
+        showErr(true, true, `${error.response.data.message}`);
       });
   };
   const validate = () => {
@@ -120,9 +120,9 @@ export default function AddBranch({ navigation }) {
       mobile[0] != "0" ||
       mobile.length > 11
     ) {
-      showErr(true, true, "please enter a valid 10 digit mobile number");
-    } else if (address.length < 8) {
-      showErr(true, true, "a valid first name must have 2 characters or more");
+      showErr(true, true, "please enter a valid 11 digit mobile number");
+    } else if (address.length < 5) {
+      showErr(true, true, "please enter a valid address");
     } else {
       setLoader(true);
       createBranch();
