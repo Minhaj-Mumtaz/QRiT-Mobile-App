@@ -197,17 +197,17 @@ export default function ProfileScreen({ navigation }) {
     const token = await AuthService.getToken();
     const user_id = await AuthService.getUserId();
     config
-      .get(`/user/vendor/details/${user_id}`, {
+      .get(`/user/vendor/detail/${user_id}`, {
         headers: {
           authorization: token,
         },
       })
       .then((response) => {
-        setVendorInfo(response.data[0]);
-        setCountOfBranches(response.data.length);
+        setVendorInfo(response.data.data[0]);
+        setCountOfBranches(response.data.data.length);
       })
       .catch((error) => {
-        console.log("error:", error);
+        console.log("error:", error.response.data.message);
       });
   };
   const getPoints = async () => {
@@ -223,7 +223,7 @@ export default function ProfileScreen({ navigation }) {
         setPoints(response.data);
       })
       .catch((error) => {
-        console.log("error:", error);
+        console.log("error:", error.response.data.message);
       });
   };
   useEffect(() => {

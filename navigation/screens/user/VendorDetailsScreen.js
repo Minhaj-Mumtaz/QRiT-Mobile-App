@@ -71,7 +71,7 @@ export default function VendorDetailsScreen({ navigation, route }) {
         },
       })
       .then((response) => {
-        setVendorDetails(response.data);
+        setVendorDetails(response.data.data);
         setLoader(false);
       })
       .catch((error) => {

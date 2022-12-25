@@ -192,7 +192,7 @@ export default function ProfileScreen({ navigation }) {
         AuthService.setAvailablePoints(
           JSON.stringify(response.data.availablePoints)
         );
-        setPoints(response.data);
+        setPoints(response.data.data);
       })
       .catch((error) => {
         console.log("error:", error);
