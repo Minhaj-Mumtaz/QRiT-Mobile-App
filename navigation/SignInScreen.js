@@ -31,7 +31,6 @@ const SignInScreen = ({ navigation, route }) => {
     config
       .post(`/user/${auth}/login/`, requestBody)
       .then((response) => {
-        console.log(response.data);
         if (response.data._token === undefined) {
           showErr(true, true, "Wrong Email/Password");
         } else {

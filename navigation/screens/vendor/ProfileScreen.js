@@ -220,7 +220,6 @@ export default function ProfileScreen({ navigation }) {
         },
       })
       .then((response) => {
-        console.log(response.data);
         setPoints(response.data);
       })
       .catch((error) => {

@@ -72,21 +72,22 @@ export default function ReviewScreen({ navigation }) {
         },
       })
       .then((response) => {
-        setReviews(response.data.review_history);
+        console.log(response.data.data);
+        setReviews(response.data.data);
         const initialValue = 0;
-        const total = response.data.review_history.length * 5;
-        const sumWithInitial = response.data.review_history
+        const total = response.data.data.length * 5;
+        const sumWithInitial = response.data.data
           .flatMap((f) => f.rate)
           .reduce(
             (accumulator, currentValue) => accumulator + currentValue,
             initialValue
           );
-        setTotalReview(response.data.review_history.length);
+        setTotalReview(response.data.data.length);
         const averageReview = (sumWithInitial * 5) / total;
         setAllReviews(averageReview);
       })
       .catch((error) => {
-        console.log("error:", error);
+        console.log("error:", error.response.data.message);
       });
   };
   useEffect(() => {
