@@ -88,8 +88,8 @@ export default function PromotionPage({ navigation }) {
     const body = {
       name: promotionName,
       description: desc,
-      start_data: startDate,
-      picture: null,
+      start_date: startDate,
+      picture: "",
       end_date: endDate,
     };
     config
@@ -105,7 +105,8 @@ export default function PromotionPage({ navigation }) {
         showErr();
       })
       .catch((error) => {
-        console.log("error:", error);
+        showErr();
+        console.log("error:", error.response.data.message);
       });
   };
 
