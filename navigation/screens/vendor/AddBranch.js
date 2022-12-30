@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { colors } from "../../../constants/Themes";
 import Feather from "react-native-vector-icons/Feather";
@@ -60,6 +61,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     color: colors.white,
+    marginTop: 15,
+    alignSelf: "center",
+  },
+  error: {
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: colors.primary,
+    height: 80,
+    width: "60%",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    borderTopLeftRadius: 10,
+    alignContent: "center",
+    borderTopRightRadius: 10,
   },
 });
 
@@ -93,6 +109,10 @@ export default function AddBranch({ navigation }) {
       email: email,
       picture: "",
     };
+
+    setTimeout(() => {
+      setLoader(false);
+    }, 3000);
 
     config
       .post(`/user/vendor/branch`, requestBody, {
@@ -162,7 +182,11 @@ export default function AddBranch({ navigation }) {
               <Feather size={50} color={colors.white} name="chevron-left" />
             </TouchableOpacity>
           </View>
-          <View style={{ width: "80%", marginBottom: 20 }}>
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flexGrow: 1 }}
+            style={{ width: "80%", marginBottom: 20 }}
+          >
             <Text
               style={{
                 color: colors.white,
@@ -194,24 +218,27 @@ export default function AddBranch({ navigation }) {
               placeholderTextColor={colors.white}
               placeholder="Mobile No"
             />
-          </View>
-          {loader ? (
-            <ActivityIndicator size="large" color={colors.white} />
-          ) : (
-            <TouchableOpacity style={styles.button} onPress={() => validate()}>
-              <View>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: "bold",
-                    color: colors.white,
-                  }}
-                >
-                  Submit
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )}
+            {loader ? (
+              <ActivityIndicator size="large" color={colors.white} />
+            ) : (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => validate()}
+              >
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      color: colors.white,
+                    }}
+                  >
+                    Submit
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          </ScrollView>
           {popUpErr && (
             <View style={styles.error}>
               <Text

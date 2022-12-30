@@ -112,7 +112,7 @@ export default function ThankYouScreen(props) {
   const [index, setIndex] = React.useState(0);
   const onPress = () => {
     setTimeout(() => {
-      props.navigation.navigate("Profile");
+      props.navigation.replace("Main", { id: true });
     }, 1000);
     setIndex(index === 1 ? 0 : 1);
     animation(index === 1 ? 0 : 1).start();

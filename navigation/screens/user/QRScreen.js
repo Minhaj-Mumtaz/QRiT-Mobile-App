@@ -55,8 +55,8 @@ export default function QRScreen({ navigation }) {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     const generated = JSON.parse(data);
-    navigation.navigate("Transaction", { id: generated.id });
-    console.log("Type: " + type + "\nData: " + generated.id);
+    console.log("Type: " + type + "\nData: " + data);
+    navigation.replace("Transaction", { id: generated.id });
   };
 
   useEffect(() => {

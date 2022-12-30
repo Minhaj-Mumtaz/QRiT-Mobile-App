@@ -12,6 +12,7 @@ import {
   Animated,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
   BackHandler,
 } from "react-native";
 import Carousel from "react-native-snap-carousel";
@@ -95,6 +96,10 @@ const images = {
 //   desc: images[i].desc,
 // }));
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 export default function Promotion({ navigation }) {
   const handleBackButtonClick = () => {
     navigation.goBack();
@@ -102,6 +107,12 @@ export default function Promotion({ navigation }) {
   };
 
   const [promotion, setPromotion] = useState();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
 
   const getAuth = async () => {
     const token = await AuthService.getToken("token");
@@ -120,7 +131,10 @@ export default function Promotion({ navigation }) {
   };
   useEffect(() => {
     getAuth();
-  }, []);
+    return () => {
+      console.log("Dismount Promotion");
+    };
+  }, [refreshing]);
 
   useEffect(() => {
     // BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
@@ -138,6 +152,9 @@ export default function Promotion({ navigation }) {
       <ScrollView
         style={styles.bottomSection}
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View
           style={{

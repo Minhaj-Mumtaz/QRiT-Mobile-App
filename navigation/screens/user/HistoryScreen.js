@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  ActivityIndicator,
   Dimensions,
 } from "react-native";
 import { colors } from "../../../constants/Themes";
@@ -113,98 +114,109 @@ export default function HistoryScreen({ navigation, route }) {
               History
             </Text>
             <View>
-              {rewardHistory &&
-                rewardHistory.map((reward) => {
-                  return (
-                    <View
-                      key={reward.id}
-                      style={{
-                        height: height / 2.5,
-                        width: width / 1.2,
-                        borderRadius: 25,
-                        marginTop: 20,
-                        backgroundColor: colors.primary,
-                        justifyContent: "center",
-                      }}
-                    >
-                      <View style={{ marginLeft: 40, marginTop: 10 }}>
-                        <Text
-                          style={{
-                            fontSize: 22,
-                            color: colors.white,
-                            fontWeight: "bold",
-                            marginBottom: 5,
-                          }}
-                        >
-                          Branch ID
-                        </Text>
-                        <Text style={{ fontSize: 18, color: colors.white }}>
-                          {reward.branch_id}
-                        </Text>
+              {rewardHistory ? (
+                rewardHistory.length > 0 ? (
+                  rewardHistory.map((reward) => {
+                    return (
+                      <View
+                        key={reward.id}
+                        style={{
+                          height: height / 2.5,
+                          width: width / 1.2,
+                          borderRadius: 25,
+                          marginTop: 20,
+                          backgroundColor: colors.primary,
+                          justifyContent: "center",
+                        }}
+                      >
+                        <View style={{ marginLeft: 40, marginTop: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 22,
+                              color: colors.white,
+                              fontWeight: "bold",
+                              marginBottom: 5,
+                            }}
+                          >
+                            Branch ID
+                          </Text>
+                          <Text style={{ fontSize: 18, color: colors.white }}>
+                            {reward.branch_id}
+                          </Text>
+                        </View>
+                        <View style={{ marginLeft: 40, marginTop: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 22,
+                              color: colors.white,
+                              fontWeight: "bold",
+                              marginBottom: 5,
+                            }}
+                          >
+                            Shopping Cost
+                          </Text>
+                          <Text style={{ fontSize: 18, color: colors.white }}>
+                            {reward.shop_price}
+                          </Text>
+                        </View>
+                        <View style={{ marginLeft: 40, marginTop: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 22,
+                              color: colors.white,
+                              fontWeight: "bold",
+                              marginBottom: 5,
+                            }}
+                          >
+                            Earned Rewards
+                          </Text>
+                          <Text style={{ fontSize: 18, color: colors.white }}>
+                            {reward.earn_reward}
+                          </Text>
+                        </View>
+                        <View style={{ marginLeft: 40, marginTop: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 22,
+                              color: colors.white,
+                              fontWeight: "bold",
+                              marginBottom: 5,
+                            }}
+                          >
+                            Spend Rewards
+                          </Text>
+                          <Text style={{ fontSize: 18, color: colors.white }}>
+                            {reward.spend_reward}
+                          </Text>
+                        </View>
+                        <View style={{ marginLeft: 40, marginTop: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 22,
+                              color: colors.white,
+                              fontWeight: "bold",
+                              marginBottom: 5,
+                            }}
+                          >
+                            Shopping Date
+                          </Text>
+                          <Text style={{ fontSize: 18, color: colors.white }}>
+                            {new Date(reward.shop_date).toDateString()}
+                          </Text>
+                        </View>
                       </View>
-                      <View style={{ marginLeft: 40, marginTop: 10 }}>
-                        <Text
-                          style={{
-                            fontSize: 22,
-                            color: colors.white,
-                            fontWeight: "bold",
-                            marginBottom: 5,
-                          }}
-                        >
-                          Shopping Cost
-                        </Text>
-                        <Text style={{ fontSize: 18, color: colors.white }}>
-                          {reward.shop_price}
-                        </Text>
-                      </View>
-                      <View style={{ marginLeft: 40, marginTop: 10 }}>
-                        <Text
-                          style={{
-                            fontSize: 22,
-                            color: colors.white,
-                            fontWeight: "bold",
-                            marginBottom: 5,
-                          }}
-                        >
-                          Earned Rewards
-                        </Text>
-                        <Text style={{ fontSize: 18, color: colors.white }}>
-                          {reward.earn_reward}
-                        </Text>
-                      </View>
-                      <View style={{ marginLeft: 40, marginTop: 10 }}>
-                        <Text
-                          style={{
-                            fontSize: 22,
-                            color: colors.white,
-                            fontWeight: "bold",
-                            marginBottom: 5,
-                          }}
-                        >
-                          Spend Rewards
-                        </Text>
-                        <Text style={{ fontSize: 18, color: colors.white }}>
-                          {reward.spend_reward}
-                        </Text>
-                      </View>
-                      <View style={{ marginLeft: 40, marginTop: 10 }}>
-                        <Text
-                          style={{
-                            fontSize: 22,
-                            color: colors.white,
-                            fontWeight: "bold",
-                            marginBottom: 5,
-                          }}
-                        >
-                          Shopping Date
-                        </Text>
-                        <Text style={{ fontSize: 18, color: colors.white }}>
-                          {new Date(reward.shop_date).toDateString()}
-                        </Text>
-                      </View>
-                    </View>
-                  );
-                })}
+                    );
+                  })
+                ) : (
+                  <View>
+                    <Text style={{ color: colors.white, fontWeight: "bold" }}>
+                      No Promotions
+                    </Text>
+                  </View>
+                )
+              ) : (
+                <ActivityIndicator size="large" color={colors.white} />
+              )}
             </View>
           </View>
         </View>

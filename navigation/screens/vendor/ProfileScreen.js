@@ -392,7 +392,7 @@ export default function ProfileScreen({ navigation }) {
                 </View>
               </View>
             </View>
-            <View style={styles.logoutBtn}>
+            {/* <View style={styles.logoutBtn}>
               <TouchableOpacity
                 style={[styles.logoutBtn, styles.logoutBtnAlign]}
                 onPress={() => {
@@ -414,7 +414,7 @@ export default function ProfileScreen({ navigation }) {
                   color={colors.white}
                 />
               </TouchableOpacity>
-            </View>
+            </View> */}
           </>
         )}
       </ImageBackground>

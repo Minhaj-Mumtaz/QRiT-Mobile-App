@@ -23,6 +23,7 @@ const TransactionScreen = ({ navigation, route }) => {
   const [availablePoints, setAvailablePoints] = useState(0);
   const [starRating, setStarRating] = useState(4);
   const [data, setData] = useState();
+  const [shopPrice, setShopPrice] = useState();
   const [loader, setLoader] = useState(false);
 
   const handleSubmit = async () => {
@@ -33,8 +34,12 @@ const TransactionScreen = ({ navigation, route }) => {
       customer_id: user_id,
       id: data.id,
       shop_price: data.shop_price,
+      // payable_price: shopPrice,
     };
 
+    setTimeout(() => {
+      setLoader(false);
+    }, 3000);
     config
       .put(`shopping/qr`, requestBody, {
         headers: {
@@ -46,14 +51,35 @@ const TransactionScreen = ({ navigation, route }) => {
           showErr(true, true, "Network Issue");
         } else {
           setLoader(false);
-          navigation.navigate("ThankYou");
         }
       })
       .catch((error) => {
         showErr(true, true, `${error.response.data.message}`);
       });
 
-    // navigation.navigate("ThankYou");
+    const requestBodyReview = {
+      rate: starRating,
+      description: "",
+      picture: "",
+    };
+
+    config
+      .post(`shopping/review/${route.params.id}`, requestBodyReview, {
+        headers: {
+          authorization: token,
+        },
+      })
+      .then((response) => {
+        if (response.status !== 201) {
+          showErr(true, true, "Network Issue");
+        } else {
+          setLoader(false);
+          navigation.navigate("ThankYou");
+        }
+      })
+      .catch((error) => {
+        showErr(true, true, `${error.response.data.message}`);
+      });
   };
 
   const validate = () => {
@@ -84,12 +110,22 @@ const TransactionScreen = ({ navigation, route }) => {
           showErr(true, true, "Network Issue");
         } else {
           setData(response.data.data[0]);
+          setShopPrice(response.data.data[0].shop_price);
           setLoader(false);
         }
       })
       .catch((error) => {
         showErr(true, true, `${error.response.data.message}`);
       });
+  };
+
+  const handlePoints = (text) => {
+    let num = data.shop_price;
+    if (text) {
+      num -= parseInt(text) * 0.04;
+    }
+    setShopPrice(num.toFixed(2));
+    setPoints(text);
   };
 
   useEffect(() => {
@@ -133,85 +169,87 @@ const TransactionScreen = ({ navigation, route }) => {
                 <Feather size={50} color={colors.primary} name="chevron-left" />
               </TouchableOpacity>
             </View>
-            {data && (
-              <View style={{ width: "80%", marginBottom: 20 }}>
-                <Text
-                  style={{
-                    color: colors.white,
-                    fontSize: 40,
-                    marginTop: 10,
-                    marginBottom: 10,
-                  }}
-                >
-                  Total Shopping
-                </Text>
-
-                <Text
-                  style={{
-                    fontSize: 24,
-                    fontWeight: "bold",
-                    color: colors.white,
-                  }}
-                >
-                  Rs. {data.shop_price}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    marginTop: 40,
-                    color: colors.white,
-                  }}
-                >
-                  Available Points: {availablePoints}
-                </Text>
-                <TextInput
-                  value={points}
-                  keyboardType={"number-pad"}
-                  onChangeText={(text) => setPoints(text)}
-                  style={{ ...styles.textInput, marginTop: 10 }}
-                  placeholderTextColor={colors.white}
-                  placeholder="Enter Points"
-                />
-                <Text
-                  style={{
-                    fontSize: 14,
-                    marginTop: 40,
-                    color: colors.white,
-                  }}
-                >
-                  Rate Us Please!
-                </Text>
-                <View style={{ alignSelf: "flex-start", marginTop: 20 }}>
-                  <StarRating
-                    maxStars={5}
-                    rating={starRating}
-                    fullStarColor={"#ffa114"}
-                    selectedStar={(rating) => setStarRating(rating)}
-                  />
-                  {/* <StarReview ratings={4} stars={5} disableReview starSize={22} /> */}
-                </View>
-              </View>
-            )}
-            {loader ? (
-              <ActivityIndicator size="large" color={colors.white} />
-            ) : (
+            {shopPrice && (
               <>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => validate()}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        fontWeight: "bold",
-                        color: colors.white,
-                      }}
-                    >
-                      Submit
-                    </Text>
+                <View style={{ width: "80%", marginBottom: 20 }}>
+                  <Text
+                    style={{
+                      color: colors.white,
+                      fontSize: 40,
+                      marginTop: 10,
+                      marginBottom: 10,
+                    }}
+                  >
+                    Total Shopping
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontSize: 24,
+                      fontWeight: "bold",
+                      color: colors.white,
+                    }}
+                  >
+                    Rs. {shopPrice}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      marginTop: 40,
+                      color: colors.white,
+                    }}
+                  >
+                    Available Points: {availablePoints}
+                  </Text>
+                  <TextInput
+                    value={points}
+                    keyboardType={"number-pad"}
+                    onChangeText={(text) => handlePoints(text)}
+                    style={{ ...styles.textInput, marginTop: 10 }}
+                    placeholderTextColor={colors.white}
+                    placeholder="Enter Points"
+                  />
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      marginTop: 40,
+                      color: colors.white,
+                    }}
+                  >
+                    Rate Us Please!
+                  </Text>
+                  <View style={{ alignSelf: "flex-start", marginTop: 20 }}>
+                    <StarRating
+                      maxStars={5}
+                      rating={starRating}
+                      fullStarColor={"#ffa114"}
+                      selectedStar={(rating) => setStarRating(rating)}
+                    />
+                    {/* <StarReview ratings={4} stars={5} disableReview starSize={22} /> */}
                   </View>
-                </TouchableOpacity>
+                </View>
+                {loader ? (
+                  <ActivityIndicator size="large" color={colors.white} />
+                ) : (
+                  <>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => validate()}
+                    >
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: "bold",
+                            color: colors.white,
+                          }}
+                        >
+                          Submit
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
               </>
             )}
           </View>

@@ -63,6 +63,10 @@ export default function VendorDetailsScreen({ navigation, route }) {
 
   const getAuth = async () => {
     setLoader(true);
+
+    setTimeout(() => {
+      setLoader(false);
+    }, 3000);
     const token = await AuthService.getToken("token");
     config
       .get(`/user/vendor/branches/${route.params.id}`, {

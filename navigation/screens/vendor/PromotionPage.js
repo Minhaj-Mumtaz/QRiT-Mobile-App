@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { colors } from "../../../constants/Themes";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -70,6 +71,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     color: colors.white,
+    alignSelf: "center",
+    marginTop: 15,
   },
 });
 
@@ -92,6 +95,10 @@ export default function PromotionPage({ navigation }) {
       picture: "",
       end_date: endDate,
     };
+
+    setTimeout(() => {
+      setLoader(false);
+    }, 3000);
     config
       .post(`/promotion/vendor/${user_id}`, body, {
         headers: {
@@ -135,7 +142,11 @@ export default function PromotionPage({ navigation }) {
               <Feather size={50} color={colors.white} name="chevron-left" />
             </TouchableOpacity>
           </View>
-          <View style={{ width: "80%", marginBottom: 20 }}>
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flexGrow: 1 }}
+            style={{ width: "80%", marginBottom: 20 }}
+          >
             <Text
               style={{
                 color: colors.white,
@@ -162,7 +173,7 @@ export default function PromotionPage({ navigation }) {
               placeholderTextColor={colors.white}
               placeholder="Description"
             />
-            <View style={{ flexDirection: "row", marginTop: 20 }}>
+            {/* <View style={{ flexDirection: "row", marginTop: 20 }}>
               <Ionicons name={"attach"} size={40} color={colors.white} />
               <Text
                 style={{
@@ -174,7 +185,7 @@ export default function PromotionPage({ navigation }) {
               >
                 Add Image
               </Text>
-            </View>
+            </View> */}
             {loader ? (
               <ActivityIndicator size="large" color={colors.white} />
             ) : (
@@ -195,7 +206,7 @@ export default function PromotionPage({ navigation }) {
                 </View>
               </TouchableOpacity>
             )}
-          </View>
+          </ScrollView>
         </View>
       </View>
     </View>

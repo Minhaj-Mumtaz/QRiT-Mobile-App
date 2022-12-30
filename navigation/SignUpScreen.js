@@ -31,7 +31,7 @@ const SignUpScreen = ({ navigation }) => {
   const [registration_no, onChangeRegNo] = useState("");
   const [Password, onChangePassword] = useState("");
   const [ConfirmPassword, onChangeConfirmPassword] = useState("");
-  const [selectedItemidx, setSelectedItemidx] = useState("");
+  const [selectedItemidx, setSelectedItemidx] = useState(-1);
   const [loader, setLoader] = useState(false);
 
   const createAccount = (first_name, last_name) => {
@@ -60,6 +60,10 @@ const SignUpScreen = ({ navigation }) => {
       };
     }
     const item = ["customer", "vendor"];
+
+    setTimeout(() => {
+      setLoader(false);
+    }, 3000);
     config
       .post(`/user/${item[selectedItemidx]}/signup/`, requestBody)
       .then((response) => {
@@ -67,7 +71,7 @@ const SignUpScreen = ({ navigation }) => {
           showErr(true, true, "account created, please sign in again");
         } else {
           AuthService.setUserSession(response.data._token);
-          AuthService.setUserId(response.data.user_id);
+          AuthService.setUserId(response.data._id);
           SignUpSuccess();
         }
       })
@@ -187,107 +191,115 @@ const SignUpScreen = ({ navigation }) => {
                 dropdownStyle={{ backgroundColor: colors.primary }}
                 rowTextStyle={{ color: colors.white }}
               />
-              <TextInput
-                value={Fullname}
-                onChangeText={(text) => onChangeFullname(text)}
-                style={{ ...styles.textInput, marginTop: 10 }}
-                placeholderTextColor={colors.white}
-                placeholder="Full name"
-              />
-              <TextInput
-                value={Email}
-                onChangeText={(text) => onChangeEmail(text)}
-                style={{ ...styles.textInput, marginTop: 10 }}
-                placeholderTextColor={colors.white}
-                placeholder="Email"
-              />
+              {selectedItemidx !== -1 && (
+                <>
+                  <TextInput
+                    value={Fullname}
+                    onChangeText={(text) => onChangeFullname(text)}
+                    style={{ ...styles.textInput, marginTop: 10 }}
+                    placeholderTextColor={colors.white}
+                    placeholder="Full name"
+                  />
+                  <TextInput
+                    value={Email}
+                    onChangeText={(text) => onChangeEmail(text)}
+                    style={{ ...styles.textInput, marginTop: 10 }}
+                    placeholderTextColor={colors.white}
+                    placeholder="Email"
+                  />
 
-              {selectedItemidx === 0 ? (
-                <>
+                  {selectedItemidx === 0 ? (
+                    <>
+                      <TextInput
+                        value={Address}
+                        onChangeText={(text) => onChangeAddress(text)}
+                        style={{ ...styles.textInput, marginTop: 10 }}
+                        placeholderTextColor={colors.white}
+                        placeholder="Address"
+                      />
+                      <TextInput
+                        value={Mobile}
+                        onChangeText={(text) => onChangeMobile(text)}
+                        style={{ ...styles.textInput, marginTop: 10 }}
+                        placeholderTextColor={colors.white}
+                        placeholder="Mobile"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <TextInput
+                        value={userName}
+                        onChangeText={(text) => onChangeUserName(text)}
+                        style={{ ...styles.textInput, marginTop: 10 }}
+                        placeholderTextColor={colors.white}
+                        placeholder="User Name"
+                      />
+                      <TextInput
+                        value={nic_no}
+                        onChangeText={(text) => onChangeNic_no(text)}
+                        style={{ ...styles.textInput, marginTop: 10 }}
+                        placeholderTextColor={colors.white}
+                        placeholder="NIC"
+                      />
+                      <TextInput
+                        value={vendorName}
+                        onChangeText={(text) => onChangeVendorName(text)}
+                        style={{ ...styles.textInput, marginTop: 10 }}
+                        placeholderTextColor={colors.white}
+                        placeholder="Vendor Name"
+                      />
+                      <TextInput
+                        value={registration_no}
+                        onChangeText={(text) => onChangeRegNo(text)}
+                        style={{ ...styles.textInput, marginTop: 10 }}
+                        placeholderTextColor={colors.white}
+                        placeholder="Registration Number"
+                      />
+                    </>
+                  )}
+
                   <TextInput
-                    value={Address}
-                    onChangeText={(text) => onChangeAddress(text)}
+                    value={Password}
+                    onChangeText={(text) => onChangePassword(text)}
+                    secureTextEntry={true}
                     style={{ ...styles.textInput, marginTop: 10 }}
                     placeholderTextColor={colors.white}
-                    placeholder="Address"
+                    placeholder="Password"
                   />
                   <TextInput
-                    value={Mobile}
-                    onChangeText={(text) => onChangeMobile(text)}
+                    value={ConfirmPassword}
+                    onChangeText={(text) => onChangeConfirmPassword(text)}
+                    secureTextEntry={true}
                     style={{ ...styles.textInput, marginTop: 10 }}
                     placeholderTextColor={colors.white}
-                    placeholder="Mobile"
-                  />
-                </>
-              ) : (
-                <>
-                  <TextInput
-                    value={userName}
-                    onChangeText={(text) => onChangeUserName(text)}
-                    style={{ ...styles.textInput, marginTop: 10 }}
-                    placeholderTextColor={colors.white}
-                    placeholder="User Name"
-                  />
-                  <TextInput
-                    value={nic_no}
-                    onChangeText={(text) => onChangeNic_no(text)}
-                    style={{ ...styles.textInput, marginTop: 10 }}
-                    placeholderTextColor={colors.white}
-                    placeholder="NIC"
-                  />
-                  <TextInput
-                    value={vendorName}
-                    onChangeText={(text) => onChangeVendorName(text)}
-                    style={{ ...styles.textInput, marginTop: 10 }}
-                    placeholderTextColor={colors.white}
-                    placeholder="Vendor Name"
-                  />
-                  <TextInput
-                    value={registration_no}
-                    onChangeText={(text) => onChangeRegNo(text)}
-                    style={{ ...styles.textInput, marginTop: 10 }}
-                    placeholderTextColor={colors.white}
-                    placeholder="Registration Number"
+                    placeholder="Confirm Password"
                   />
                 </>
               )}
-
-              <TextInput
-                value={Password}
-                onChangeText={(text) => onChangePassword(text)}
-                secureTextEntry={true}
-                style={{ ...styles.textInput, marginTop: 10 }}
-                placeholderTextColor={colors.white}
-                placeholder="Password"
-              />
-              <TextInput
-                value={ConfirmPassword}
-                onChangeText={(text) => onChangeConfirmPassword(text)}
-                secureTextEntry={true}
-                style={{ ...styles.textInput, marginTop: 10 }}
-                placeholderTextColor={colors.white}
-                placeholder="Confirm Password"
-              />
             </View>
-            {loader ? (
-              <ActivityIndicator size="large" color={colors.white} />
+            {selectedItemidx !== -1 ? (
+              loader ? (
+                <ActivityIndicator size="large" color={colors.white} />
+              ) : (
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => validate()}
+                >
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "bold",
+                        color: colors.white,
+                      }}
+                    >
+                      Sign Up
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )
             ) : (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => validate()}
-              >
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      fontWeight: "bold",
-                      color: colors.white,
-                    }}
-                  >
-                    Sign Up
-                  </Text>
-                </View>
-              </TouchableOpacity>
+              <></>
             )}
           </View>
         </ScrollView>

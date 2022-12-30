@@ -118,12 +118,12 @@ export default function MainCircle(props) {
           </TouchableOpacity>
         </View>
       </View>
-      {isVendor ? (
+      {isVendor && (
         <View
           style={{
             zIndex: 100,
-            top: height / 2.55,
-            right: width / 2.2,
+            top: height / 3,
+            right: width / 3.7,
             position: "absolute",
           }}
         >
@@ -139,28 +139,27 @@ export default function MainCircle(props) {
             />
           </TouchableOpacity>
         </View>
-      ) : (
-        <View
-          style={{
-            zIndex: 100,
-            top: height / 2.55,
-            right: width / 2.2,
-            position: "absolute",
+      )}
+      <View
+        style={{
+          zIndex: 100,
+          top: height / 2.55,
+          right: width / 2.2,
+          position: "absolute",
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Settings");
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Settings");
-            }}
-          >
-            <Ionicons
-              name="settings-outline"
-              size={35}
-              color={colors.secondary2}
-            />
-          </TouchableOpacity>
-        </View>
-      )}
+          <Ionicons
+            name="settings-outline"
+            size={35}
+            color={colors.secondary2}
+          />
+        </TouchableOpacity>
+      </View>
 
       {!isVendor && (
         <>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -175,9 +175,10 @@ const image = {
   uri: "https://media.istockphoto.com/photos/background-abstract-pink-and-black-dark-are-light-with-the-gradient-picture-id1279904166?k=20&m=1279904166&s=612x612&w=0&h=OoUfXiSlwOnUqW_7FF8dmiG6QvWRPLRQExdnWr-uDeY=",
 };
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen({ navigation, route }) {
   const [isActive, setIsActive] = useState(false);
   const [points, setPoints] = useState();
+  // const dat = route?.params?.id;
 
   const getAuth = async () => {
     const token = await AuthService.getToken();
@@ -200,6 +201,7 @@ export default function ProfileScreen({ navigation }) {
   };
   useEffect(() => {
     getAuth();
+    console.log("Jack--->");
   }, []);
 
   return (

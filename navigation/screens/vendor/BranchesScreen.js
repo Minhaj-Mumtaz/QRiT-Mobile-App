@@ -4,6 +4,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
   ScrollView,
   TextInput,
   Dimensions,
@@ -18,8 +19,8 @@ import AuthService from "../../../service/AuthService";
 const { width, height } = Dimensions.get("window");
 
 const wait = (timeout) => {
-  return new Promise(resolve => setTimeout(resolve, timeout));
-}
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const styles = StyleSheet.create({
   body: {
@@ -122,68 +123,79 @@ export default function BranchesScreen({ navigation }) {
               Details
             </Text>
             <View>
-              {vendorDetails &&
-                vendorDetails.map((vendor) => {
-                  return (
-                    <View
-                      key={vendor.id}
-                      style={{
-                        height: height / 4,
-                        width: width / 1.2,
-                        borderRadius: 25,
-                        marginTop: 20,
-                        backgroundColor: colors.primary,
-                        justifyContent: "center",
-                      }}
-                    >
-                      <View style={{ marginLeft: 40, marginTop: 10 }}>
-                        <Text
-                          style={{
-                            fontSize: 22,
-                            color: colors.white,
-                            fontWeight: "bold",
-                            marginBottom: 5,
-                          }}
-                        >
-                          Email
-                        </Text>
-                        <Text style={{ fontSize: 18, color: colors.white }}>
-                          {vendor.email}
-                        </Text>
+              {vendorDetails ? (
+                vendorDetails.length > 0 ? (
+                  vendorDetails.map((vendor) => {
+                    return (
+                      <View
+                        key={vendor.id}
+                        style={{
+                          height: height / 4,
+                          width: width / 1.2,
+                          borderRadius: 25,
+                          marginTop: 20,
+                          backgroundColor: colors.primary,
+                          justifyContent: "center",
+                        }}
+                      >
+                        <View style={{ marginLeft: 40, marginTop: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 22,
+                              color: colors.white,
+                              fontWeight: "bold",
+                              marginBottom: 5,
+                            }}
+                          >
+                            Email
+                          </Text>
+                          <Text style={{ fontSize: 18, color: colors.white }}>
+                            {vendor.email}
+                          </Text>
+                        </View>
+                        <View style={{ marginLeft: 40, marginTop: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 22,
+                              color: colors.white,
+                              fontWeight: "bold",
+                              marginBottom: 5,
+                            }}
+                          >
+                            Branch Address
+                          </Text>
+                          <Text style={{ fontSize: 18, color: colors.white }}>
+                            {vendor.address}
+                          </Text>
+                        </View>
+                        <View style={{ marginLeft: 40, marginTop: 10 }}>
+                          <Text
+                            style={{
+                              fontSize: 22,
+                              color: colors.white,
+                              fontWeight: "bold",
+                              marginBottom: 5,
+                            }}
+                          >
+                            Branch Number
+                          </Text>
+                          <Text style={{ fontSize: 18, color: colors.white }}>
+                            {vendor.phone_no}
+                          </Text>
+                        </View>
                       </View>
-                      <View style={{ marginLeft: 40, marginTop: 10 }}>
-                        <Text
-                          style={{
-                            fontSize: 22,
-                            color: colors.white,
-                            fontWeight: "bold",
-                            marginBottom: 5,
-                          }}
-                        >
-                          Branch Address
-                        </Text>
-                        <Text style={{ fontSize: 18, color: colors.white }}>
-                          {vendor.address}
-                        </Text>
-                      </View>
-                      <View style={{ marginLeft: 40, marginTop: 10 }}>
-                        <Text
-                          style={{
-                            fontSize: 22,
-                            color: colors.white,
-                            fontWeight: "bold",
-                            marginBottom: 5,
-                          }}
-                        >
-                          Branch Number
-                        </Text>
-                        <Text style={{ fontSize: 18, color: colors.white }}>
-                          {vendor.phone_no}
-                        </Text>
-                      </View>
-                    </View>
-                  );
-                })}
+                    );
+                  })
+                ) : (
+                  <View>
+                    <Text style={{ color: colors.white, fontWeight: "bold" }}>
+                      No Branches
+                    </Text>
+                  </View>
+                )
+              ) : (
+                <ActivityIndicator size="large" color={colors.white} />
+              )}
             </View>
           </View>
         </View>

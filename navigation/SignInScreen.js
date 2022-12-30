@@ -22,34 +22,41 @@ const SignInScreen = ({ navigation, route }) => {
   const [password, onChangePassword] = useState("");
   const [loader, setLoader] = useState(false);
 
-  const checkData = (auth) => {
+  const checkData = async (auth) => {
     const requestBody = {
       email: email,
       password: password,
     };
-
-    config
-      .post(`/user/${auth}/login/`, requestBody)
-      .then((response) => {
-        if (response.data._token === undefined) {
-          showErr(true, true, "Wrong Email/Password");
-        } else {
-          AuthService.setUserSession(response.data._token);
-          AuthService.setUserId(response.data._id);
-          if (auth === "customer") {
-            navigation.navigate("Main");
+    setTimeout(() => {
+      setLoader(false);
+    }, 3000);
+    try {
+      config
+        .post(`/user/${auth}/login/`, requestBody)
+        .then((response) => {
+          console.log("asdazzzzzzz");
+          if (response.data._token === undefined) {
+            showErr(true, true, "Wrong Email/Password");
           } else {
-            navigation.navigate("MainVendor");
+            AuthService.setUserSession(response.data._token);
+            AuthService.setUserId(response.data._id);
+            if (auth === "customer") {
+              navigation.navigate("Main");
+            } else {
+              navigation.navigate("MainVendor");
+            }
+            setLoader(false);
           }
-          setLoader(false);
-        }
-      })
-      .catch((error) => {
-        showErr(true, true, `${error.response.data.message}`);
-      });
+        })
+        .catch((error) => {
+          showErr(true, true, `${error.response.data.message}`);
+        });
+    } catch (e) {
+      console.log("asdasd");
+    }
   };
 
-  const validate = () => {
+  const validate = async () => {
     if (email == "" && password == "") {
       showErr(true, true, "Please fill in all fields");
     } else if (email == "") {
@@ -60,9 +67,9 @@ const SignInScreen = ({ navigation, route }) => {
       setOverlay(false);
       setLoader(true);
       if (route.params.name === "User") {
-        checkData("customer");
+        await checkData("customer");
       } else {
-        checkData("vendor");
+        await checkData("vendor");
       }
     }
   };

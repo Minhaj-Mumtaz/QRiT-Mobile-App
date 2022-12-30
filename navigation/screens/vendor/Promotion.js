@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import CarouselCard from "../../../constants/CarouselCard";
 import { colors } from "../../../constants/Themes";
@@ -44,8 +45,19 @@ const styles = StyleSheet.create({
   },
 });
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 export default function Promotion({ navigation }) {
   const [promotions, setPromotions] = useState();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+
   const getAuth = async () => {
     const token = await AuthService.getToken("token");
     const user_id = await AuthService.getUserId();
@@ -67,7 +79,7 @@ export default function Promotion({ navigation }) {
     return () => {
       console.log("Dismount Promotion");
     };
-  }, []);
+  }, [refreshing]);
 
   return (
     <View style={styles.body}>
@@ -78,6 +90,9 @@ export default function Promotion({ navigation }) {
       <ScrollView
         style={styles.bottomSection}
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         <View
           style={{

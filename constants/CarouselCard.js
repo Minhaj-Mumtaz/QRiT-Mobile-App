@@ -63,14 +63,14 @@ export default function CarouselCard({ item }) {
           style={styles.carouselImage}
           source={{
             uri:
-              item.picture !== null
-                ? item.picture
-                : "http://img1.igg.com/999/game/2020/07/15/030709_7102_min.png",
+              item.picture === "" || item.picture === null
+                ? "http://img1.igg.com/999/game/2020/07/15/030709_7102_min.png"
+                : item.picture,
           }}
         />
       </View>
       <View style={[styles.shadow, styles.descStyle]}>
-        <Text style={styles.descText}>{item.description}</Text>
+        <Text numberOfLines={1} style={styles.descText}>{item.description}</Text>
       </View>
     </View>
   );
